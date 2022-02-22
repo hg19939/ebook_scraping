@@ -13,6 +13,7 @@ import csv
 import requests
 from bs4 import BeautifulSoup
 
+
 # Script:
 def books_crawling():
     """
@@ -36,7 +37,6 @@ def books_crawling():
     
     return links
     
-
 
 def books_scraping(books: list):
     """
