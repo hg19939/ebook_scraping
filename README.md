@@ -80,5 +80,5 @@ def web_scraping(books: list):
         download_links.append(link)
     
     return titles, plots, download_links
-    ```
+```
 The function initializes a set of lists to store the relevant books' information. Then a [for loop](https://docs.python.org/3/tutorial/controlflow.html#for-statements) is used to go through each one of them. Inside the loop's body, the title, plot, and link are extracted using the BeautifulSoup module. Finally, those lists are returned.
