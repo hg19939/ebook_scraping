@@ -13,9 +13,8 @@ import csv
 import requests
 from bs4 import BeautifulSoup
 
-
 # Script:
-def books_crawling():
+def web_crawling():
     """
     Upon calling, this function will loop through the contents of
     the current web page, extract the name and links of all books
@@ -38,7 +37,8 @@ def books_crawling():
     return links
     
 
-def books_scraping(books: list):
+
+def web_scraping(books: list):
     """
     Uppon calling, this function will loop through a list of scraped
     books, extract the plots and download links, before returning them.
@@ -116,8 +116,8 @@ for page_num in range(1, 86):
     source = requests.get("https://www.freetechbooks.com/topics?page={}".format(page_num)).text    
     soup = BeautifulSoup(source, "lxml")
     
-    links = books_crawling()
-    titles, plots, download_links = books_scraping(links)
+    links = web_crawling()
+    titles, plots, download_links = web_scraping(links)
     save_as_csv(csv_file, titles, plots, download_links)
 
 # Close the CSV file:
