@@ -18,27 +18,25 @@ The code of this project is divided in two separate *.py* files: *bot.py* and *i
 ### bot.py
 This file is home of the crawling and scraping functionality which is the hearth of the project. The first function, called web_crawling(), aims to craw the contents of the forementioned website and extract the link to every book's sub-page. The links are then saved in a [list](https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions) which is returned by the function.
 ```
-{
-  def web_crawling():
-      """
-      Upon calling, this function will loop through the contents of
-      the current web page, extract the name and links of all books
-      presented, save them in a dictionary, and finally return it.
+def web_crawling():
+    """
+    Upon calling, this function will loop through the contents of
+    the current web page, extract the name and links of all books
+    presented, save them in a dictionary, and finally return it.
+    
+    Returns
+    -------
+    links : list
+        A list of web links to scrape data from.
+        
+    @author: hg19939
+    """
+    
+    links = []
 
-      Returns
-      -------
-      links : list
-          A list of web links to scrape data from.
-
-      @author: hg19939
-      """
-
-      links = []
-
-      for book in soup.find_all("div", {"class": "col-xs-12"}):
-          link = book.p.a["href"]
-          links.append(link)
-
-      return links
-}
+    for book in soup.find_all("div", {"class": "col-xs-12"}):
+        link = book.p.a["href"]
+        links.append(link)
+    
+    return links
 ```
