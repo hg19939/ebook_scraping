@@ -5,9 +5,9 @@ This project was developed during the first two weeks of the author's Frontrunne
 
 ## Technologies used
 The author took advantage of the following technologies to develop the project:
-- Language: Python
-- Libraries: csv, requests, BeautifulSoup
-- Database: Elasticsearch's Python API
+- Language: [Python](https://www.python.org/downloads/)
+- Modules: [csv](https://docs.python.org/3/library/csv.html), [requests](https://docs.python-requests.org/en/latest/), [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
+- Database: [Elasticsearch's Python API](https://elasticsearch-py.readthedocs.io/en/v8.0.0/)
 
 ## What is Web Crawling?
 According to the following Wikipedia [article](https://en.wikipedia.org/wiki/Web_crawler), Web crawling is the process of indexing the Web by a bot (often called crawler or spider). The process is usually operated by a search engine. This procedure is often times followed by Web scraping, which aims to extract data from a given page, in our case e-books' titles, plots, and download links. Refer to [this](https://en.wikipedia.org/wiki/Web_scraping) article for more information about Web scraping.
@@ -16,7 +16,7 @@ According to the following Wikipedia [article](https://en.wikipedia.org/wiki/Web
 The code of this project is divided in two separate *.py* files: *bot.py* and *index.py*.
 
 ### bot.py
-This file is home of the crawling and scraping functionality which is the hearth of the project. The first function, called web_crawling(), aims to craw the contents of the forementioned website and extract the link to every book's sub-page. The links are then saved in a [list](https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions) which is returned by the function.
+This file is home of the crawling and scraping functionality which is the hearth of the project. The first function, called *web_crawling()*, aims to craw the contents of the forementioned website and extract the link to every book's sub-page. The links are then saved in a [list](https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions) which is returned by the function.
 ```
 def web_crawling():
     """
@@ -40,3 +40,45 @@ def web_crawling():
     
     return links
 ```
+Logically, the next thing to do would be to scrap the data from these sub-pages, which is exactly what the *web_scraping()* function does.
+```
+def web_scraping(books: list):
+    """
+    Uppon calling, this function will loop through a list of scraped
+    books, extract the plots and download links, before returning them.
+    Parameters
+    ----------
+    books : list
+        A list of book webpage links to scrape.
+
+    Returns
+    -------
+    titles: list
+        A list of books' titles.
+    plots : list
+        A list of books' plots.
+    download_links : list
+        A list of links to access or download the book from.
+        
+    @author: hg19939
+    """
+    
+    titles = []
+    plots = []
+    download_links = []
+
+    for book in books:
+        source = requests.get(book).text
+        soup = BeautifulSoup(source, "lxml")
+        
+        title = soup.find("p", {"class": "media-heading lead"}).text
+        plot = soup.find("p", "")
+        link = soup.find("a", {"class": "btn btn-primary"})["href"]
+        
+        titles.append(title)
+        plots.append(plot.text)
+        download_links.append(link)
+    
+    return titles, plots, download_links
+    ```
+The function initializes a set of lists to store the relevant books' information. Then a [for loop](https://docs.python.org/3/tutorial/controlflow.html#for-statements) is used to go through each one of them. Inside the loop's body, the title, plot, and link are extracted using the BeautifulSoup module. Finally, those lists are returned.
